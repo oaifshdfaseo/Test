@@ -1,0 +1,421 @@
+*console.dir(Object);查看方法
+*'use strict' 严格模式(es6自动使用严格模式)
+*在一个作用域中同步比异步先执行,但axync除外
+1.let
+	声明的变量只在 let 命令所在的代码块内有效,不存在变量提升
+	let obj = {name:"纪泉"};//定义对象
+	用let声明的变量在for里都是私有的可以直接获得不用存储到新的子变量中
+2.const 
+	声明一个只读的常量,必须赋值，一旦声明，常量的值就不能改变
+3.块级作用域
+	一个{}就是一个块级作用域
+4.解构赋值
+	1.数组
+		1.基本
+			let arr=[1,2,3,4];
+			let[x,y,m,n] = arr;
+			console.log(x,y,m,n);
+		2.默认值
+			let[x1,x2=10]=[1,2];//x2重新赋值时有则代替，无则默认
+		3.省略赋值
+			let[,m2]=[1,2];//m2=2
+		4.不定参数赋值
+			let[y1,y2,...y3]=[1,2,3,4,5]//y3=[3,4,5 ]
+	2.对象
+		1.基本
+			let obj={name:"纪泉",age:10};
+			let {name,age}=obj;
+			console.log(name);
+ 		2.默认值
+ 			let {name,age=100}={name:"纪泉",age:10};
+ 		3.不定参数赋值
+ 			let {name,...age}={name:"纪泉",age:10,image:12};
+			console.log(name,age);
+	3.嵌套
+		1.基本
+			let {name,age=100，list:[a1,a2,a3]}={name:"纪泉",age:10,list:[1,2.3]};
+			console.log(a1);
+	4.其他数据类型
+		1.字符串
+			let [x,y]="123";//x=1,y=2默认转化为数组
+			let {_proto_:a} = 1;如果a不属于原型则为空
+	5.函数
+		1.数组
+			function get([a,b,c,...d]){};
+			get([1,2,3,4,5,6,7]); 
+		2.对象
+			function get([name,age=18]){};
+			get({name:"纪泉",age:10}); 
+5.字符串
+	1.includes 返回值为true或false
+		1.作用:
+			判断字符串中有没有指定字符
+		2.用法:(如果第二个参数不是数字默认转为数字)
+			includes("指定字符",开始查找的位置)
+		3.案例
+			let str = "abc";
+			str.includes("a");
+	2.startWith与endWith
+		1.作用:
+			判断字符串是不是以指定字符作为开头和结尾
+		2.用法:(如果第二个参数不是数字默认转为数字)
+			startWith("指定字符",开始查找的位置)
+			endWith("指定字符",从前多少个查看)
+		3.案例
+			let str = "abc";
+			str.startWith("a");
+	3.repeat
+		1.作用:
+			将字符串重复(整数)
+		2.用法:(如果第二个参数不是数字默认转为数字)
+			repeat(重复次数)
+		3.案例
+			let str = "abc";
+			str.repeat(2);
+	4.padStart与padEnd(ES7)
+		1.作用:
+			按照指定字符补全字符串的指定长度
+		2.用法:(如果第二个参数不是数字默认转为数字)
+			padStart(长度,"指定字符")
+			padEnd(长度,"指定字符")
+		3.案例
+			let str = "abc";
+			str.padStart(5,"a");//"aaabc"
+	*5.模板字符串(和普通字符串一样使用区别是可以添加变量用${})
+		1.案例1
+			let str = `哈哈`;
+			let num = 1;
+			str+=num;//哈哈1 
+		2.案例2
+			let class1 = "name";
+			let name1 = "纪泉";
+			document.body.innerHTML+=`<h1 class="${class1}">${name1}</h1>`;
+6.数组
+	1.Array类上的扩展(所有方法包前不包后)
+		1.只有一个参数(数字n),返回n个空位数组
+		2.Array.of():只有一个参数(数字n),返回一个数组
+		3.Array.from():传入一个数组或类数组(字符串等),返回一个数组
+		4.原型上扩展的方法
+			1.copyWithin(替换的起始位置,查找的起始位置,查找的结束位置) 从原数组读取内容替换数组的指定位置的内容,数组大小不变,会改变原数组
+			2.fill(替换内容,替换初始位置,替换结束位置)按照指定字符替换数组,会改变原数组
+			3.filter()遍历数组根据返回值过滤原数组,得到新数组
+				let arry=["纪泉",1];
+				//item当前内容 index下标
+				arry.filter(function(item,index){
+					//返回true留下当前项
+					return typeof item === "number";
+				});
+			4.find与findIndex 查找和查找索引,只查找一个
+				let arry=["纪泉",1];
+				arry.find(function(item){
+					//返回true留下当前项
+					return typeof item === "number";
+				});
+			5.includes(要判断的内容,查找初始位置,查找结束位置)判断数组中有没有某一项
+			6.every 如果每一项都返回true最后结果为true,只要有一个是false就是false
+				let arry=["纪泉",1];
+				arry.every(function(item,index){
+					//返回true留下当前项
+					return typeof item === "number";
+				});
+			7.some 只要有一个是true就是true
+				let arry=["纪泉",1];
+				arry.some(function(item,index){
+					//返回true留下当前项
+					return typeof item === "number";
+				});
+			8.reduce 迭代
+				let arry=[0,1];
+				//prev上一次返回值 item当前内容
+				arry.reduce(function(prev,item){
+					//返回true留下当前项
+					return prev + item;//求和
+				});
+			9.reduceRight 从右开始迭代
+				let arry=[0,1];
+				arry.reduceRight(function(prev,item){
+					//返回true留下当前项
+					return prev + item;//求和
+				});
+			10.keys 遍历每一项的下标
+				let arry=[0,1];
+				for(let key of arry.keys()){
+					console.log(key);
+				}
+			11.entries 遍历每一项的内容和下标
+				let arry=[0,1];
+				for(let key of arry.entries()){
+					console.log(key);
+				}
+7.运算符(...:用于数组)
+	1.作用
+		1.将数组变为非数组
+			let arr1 = [1,2,3,4];
+			let arr2 = [10,20,30,40]
+			console.log([...arr1,...arr2]);
+		2.将非数组变为数组
+			let str = "123";
+			console.log([...str]);
+		3.求数组最大值
+			let arr = [1,2,3,4];
+			console.log(Math.max(...arr));
+8.箭头函数(都是匿名函数)
+	1.写法
+		let(可不写) 函数名=(形参(不用则不写包括=))=>{函数体};
+	2.案例
+		let arr = ["纪泉",18,19,20];
+		console.log(arr.filter(item=>typeof item == "number"));
+	3.特点
+		1.没有this指向,里面的this是上一级作用域中的this
+		2.没有arguments
+		3.不可用作构造函数,因为不可以使用new来执行
+9.对象
+	1.简洁方式
+		let name="纪泉",age=18;
+		let student ={name,age};
+		let str ="name";
+		let obj={
+			fn(){},//fn:function(){}
+			[str]:name//属性名是字符串,属性名使用[] 里面可以写变量
+		};
+	2.方法扩展
+		1.Object() 将参数变为对象
+		2.Object.is() 判断两个值是否相等
+		3.Object.assign(对象1,对象2) 合拼对象
+		4.扩展运算符...
+			let school={...obj1,...obj2};
+		5.Object.getOwnPropertyDescriptor(字符串/数组等,属性) 获取一个对象某个属性的描述
+			configurable: false 可删除
+			enumerable: false 可遍历
+			writable: false 可修改
+		6.Object.keys() 返回一个数组[可遍历的所有属性]
+		7.Object.values() 返回一个数组[可遍历的所有属性的值]
+		8.Object.entries() 返回一个数组[每一项也是一个数组[键,值]]
+	3.set和get
+		let obj = {
+			get name(){//只要通过obj获取name属性就会触发
+				console,log(1);
+				return "111";
+			},
+			set name(val){//只要通过obj给name属性赋值就会触发
+				console,log(val);
+				return val;
+			}
+		};
+		console,log(obj.name)//1
+		obj.name = "纪泉";//纪泉
+10.Symbol函数(值类型,任意一个Symbol都是不同的)
+	1.简单使用
+		let sym1 = Symbol("1");//参数是对Symbol的描述
+	2.不可计算，也就是无法转为数字，可以转为布尔值
+	3.可使用toString()变为字符串
+		console.log(sym1.toString());
+	4.Symbol.for() 找到相同描述的Symbol(有则找,无则生)
+		let sym2 = Symbol.for("1");
+	5.Symbol.keyfor(Symbol值) 找到使用Symbol.for()创建的值的描述
+		console.log(Symbol.keyfor(sym1));
+11.Set(类似数组,只有值没有键)
+	1.参数是一个有iterable接口的类型
+	2.iterable接口的类型有:数组、伪数组、元素集合、Set、Map、字符串
+	3.会默认去重
+	4 .使用
+		console.log(new Set([1,2,3,4]));
+		console.log(new Set("纪泉"));
+	5.属性
+		1.size() Set的大小
+		2.add(增加的参数) 增加(一次只能加一个)
+		3.clear() 清空
+		4.delete(删除的参数) 删除set中的一个项数据
+		5.has(需判断的参数) 判断有没有
+		6.forEach 遍历
+			set.forEach((...item)=>{console.log(item);})
+		7.keys 遍历
+			for(let val of set.keys()){console.log(val);}
+		8.values 遍历
+			for(let val of set.values()){console.log(val);}
+		9.entries 遍历
+			for(let [item,val] of set.entries()){console.log(item,val);}
+13.Map
+	1.使用
+		let map1 = new Map([[key,value],[]...])//key 键 value 值
+	2.key可以是任意数据类型
+	3.方法
+		1.get(key) 获取
+		2.set(key,value) 赋值(如果key存在就修改)
+		3.has(key) 判断是否存在
+		4.delete(key) 删除
+		5.clear() 清空
+		6.forEach 遍历
+			map1.forEach((key,value，input)=>{
+				console.log(key);
+				console.log(value);
+				console,log(input);//map实例
+			})
+		7.keys 遍历
+			for(let key of map1.keys()){console.log(key);}
+		8.values 遍历
+			for(let val of map1.values()){console.log(val);}
+		9.entries 遍历
+			for(let [key,val] of map1.entries()){console.log(key,val);}
+14.Proxy(拦截:对对象默认操作拦截)
+	1.基本使用
+		let proxy1 = new Proxy({目标对象},{拦截方法});
+	2.get(只要获取就触发,拦截对象属性的读取)
+		let obj={name:"纪泉",age:18};
+		let proxy1 = new Proxy(obj,{
+			get(target,propKey,receiver){
+				//target 目标对象
+				//propKey 属性名
+				//receiver 实例
+				console.log(arguments);
+				console.log(1);
+				return "你好"
+			}
+		});
+		conaole.log(obj.name);//你好
+	3.set(target, propKey, value, receiver)：拦截对象属性的设置
+		目标对象  属性名  属性值   实例
+	4.has(target, propKey)：拦截propKey in proxy的操作，返回一个布尔值
+		目标对象  属性名
+	5.apply(target, object, args)：拦截 Proxy 实例作为函数调用的操作
+		目标对象     给函数修改this  函数执行的参数(数组)
+15.class
+	1.使用(必须使用new执行)
+		//建立类
+		class A{
+			//类本身的函数
+			constructor(x){
+				this.x=x//添加属性
+			}
+			//等于通过原型增加方法
+			getA(){
+				console.log("hello");
+			}
+		};
+		let a = new A(10);
+		console.log(a);
+	2.让类直接执行
+		let a = new class{
+			constructor(name){
+				console.log(name);
+			}
+		}("纪泉");
+	3.静态方法(不会被实例继承)
+		class A{
+			constructor{}
+			static get(){}//静态方法
+		}
+		let a = new A();
+		a.get()//不可执行
+	4.静态方法可被子类继承
+		class A{
+			static getA(){
+				console.log(1);
+			}
+		}
+		class B extends A{
+			static getA(){
+				super.getA()
+			};
+		}
+		B.getA();
+	5.继承
+		class A{
+			constructor(x){
+				this.x = x;
+			}
+			getX(){
+				console.log(this.x);
+			}
+			static getA(){
+				console.log("1");
+			}
+		}
+		class B extends A{
+			constructor(x){
+				super(x);//子类没有this用super获取父类的this
+				this.y = 100;
+			}
+			getX(){
+				super.getX();//指向父类的原型
+			}
+			static getA(){
+				super.getA();//指向父类本身
+			};
+		}
+		let b = new B("纪泉");
+		b.getX();
+		B.getA();
+16.Promise(异步(不会按顺序执行))
+	1.Promise由pending(状态)分为Fulfilled(成功)和Rejected(失败)
+	2.then
+		1.定义
+			let pro = new Promise((resolve,reject)=>{
+				resolve("success");//成功
+				reject("error");//失败
+			})
+		2.执行
+			pro.then((res)=>{
+				console.log(res);
+			},(re)=>{
+				console.log(re);
+			})
+		3.对象中使用
+			1.定义对象
+				function fn(url){
+					retrun new Promise((resolve,reject)=>{
+						let img = new Img;
+						img.src = url;
+						img.onload = function(){resolve(img)};
+						img.onerror = function(e){reject(e)};
+					})
+				}
+			2.使用
+				fn("1.psd").then((img)=>{
+					console.log(img);
+				},(e)=>{
+					console.log(e);
+				})
+	3.catch(捕获异常)
+		1.使用
+			fn("1.psd").then((img)=>{
+				console.log(img);
+			}).cath((e)=>{
+				console.log(e);
+			});
+	4.all(放入数组,必须全部成功才走成功)
+		1.使用
+			Promise.all([每一项都是Promise,如果不是自动转为Promise]).then((res)=>{console.log(res);},(e)=>{console.log(e);});
+			
+	5.race(只要有一个状态先改变,当前实例状态就改变)
+		1.使用
+			Promise.race([每一项都是Promise,如果不是自动转为Promise]).then((res)=>{console.log(res);},(e)=>{console.log(e);});
+17.async(异步,默认返回一个Promise对象)
+	1.基本使用
+		async function getA(){
+			throw new Error("1");//有错误就会被catch捕获到
+			return "纪泉"//返回的内容就是成功回调的参数
+		};
+		getA().then((res)=>{console.log(res)}).catch((re)=>{console.log(e)});
+	2.await
+		let p = new Promise((resolve,reject)=>{
+			reject("sorry");//失败
+			resolve("success");//成功
+		})
+		async function getA(){
+			return await p;//先执行Promise,如果不是Promise则转为Promise
+		};
+		getA().then((res)=>{
+			console.log(res)
+		}).catch((re)=>{
+			console.log(e)
+		});
+18.模块(ESmodule)
+	1.导出模块(export、export default)
+		export let name = "纪泉";
+		export default let name = "纪泉";//可以使用任意的导入名来接收且只允许向外暴露1次
+	2.引入模块(import)
+		export:
+			import {导入名 as 别名} from "对应的js页面名"
+		export default：
+			import 导入名 from "对应的js页面名"
